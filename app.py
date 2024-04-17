@@ -1,7 +1,20 @@
-from flask import Flask, jsonify, render_template, request
+from subprocess import call
+from flask import Flask, jsonify, render_template, request,redirect, url_for
 from gramformer import Gramformer
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+
+from flask import Flask, render_template, request
+import webbrowser
+import os
+from flask_cors import CORS
+import json
+
+import lambdaTTS
+import lambdaSpeechToScore
+import lambdaGetSample
+
 
 app = Flask(__name__)
 
@@ -54,6 +67,35 @@ def process_paraphrase():
     paraphrased_sentences = paraphrase(input_sentence, num_beams=5, num_beam_groups=5, num_return_sequences=5, repetition_penalty=10.0, diversity_penalty=3.0, no_repeat_ngram_size=2, temperature=0.7, max_length=128)
     # Return the paraphrased sentences to the frontend
     return jsonify({'result': paraphrased_sentences})
+
+
+@app.route('/run-script', methods=['GET'])
+def run_script():
+    
+    # call(['python', 'webApp.py'])
+    
+    return render_template("main.html")
+
+
+@app.route('/getAudioFromText', methods=['POST'])
+def getAudioFromText():
+    event = {'body': json.dumps(request.get_json(force=True))}
+    return lambdaTTS.lambda_handler(event, [])
+
+
+@app.route('/getSample', methods=['POST'])
+def getNext():
+    event = {'body':  json.dumps(request.get_json(force=True))}
+    return lambdaGetSample.lambda_handler(event, [])
+
+
+@app.route('/GetAccuracyFromRecordedAudio', methods=['POST'])
+def GetAccuracyFromRecordedAudio():
+
+    event = {'body': json.dumps(request.get_json(force=True))}
+    print(event)
+    lambda_correct_output = lambdaSpeechToScore.lambda_handler(event, [])
+    return lambda_correct_output
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link href={{ url_for('static' , filename="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900")}} rel="stylesheet">
 
-    <title>LanguageLift</title>
+    <title>SpeakEasy</title>
     
     <!-- Bootstrap core CSS -->
     <link href={{ url_for('static' , filename='vendor/bootstrap/css/bootstrap.min.css')}} rel="stylesheet">
@@ -34,7 +34,7 @@ https://templatemo.com/tm-557-grad-school
   <!--header-->
   <header class="main-header clearfix" role="header">
     <div class="logo">
-      <a href="#"><em>Language</em> Lift</a>
+      <a href="#"><em>Speak</em> Easy</a>
     </div>
     <a href="#menu" class="menu-link"><i class="fa fa-bars"></i></a>
     <nav id="menu" class="main-nav" role="navigation">
@@ -117,7 +117,9 @@ https://templatemo.com/tm-557-grad-school
           <div class="features-post third-features">
             <div class="features-content">
               <div class="content-show">
-                <h4><i class="fa fa-book"></i>Pronounciation Assesment</h4>
+                <a href="{{ url_for('run_script') }}">
+
+                <h4><i class="fa fa-book"></i>Pronounciation Assesment</h4></a>
               </div>
               <div class="content-hide">
                 <p>Pronunciation assessment hones verbal proficiency, refining clarity and fluency in speech.</p>
